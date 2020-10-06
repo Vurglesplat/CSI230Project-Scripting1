@@ -5,16 +5,24 @@
 # author brandon.boras
 # date 10/20/2020
 
+	#functions
+
 # basic info for the distro, namely kernel version and CPU architecture (x86_64)
 distroInfo()
 {
 	uname -srm
 }
 
-cat << _EOF_
+if [ "$EUID" -ne 0 ]; then
+	echo "Please run as root"
+	exit 0
+else
+	# Here script
+	cat <<- _EOF_
 
-hello world 2!!!
-$(distroInfo)
+	hello world 2!!!
+	$(distroInfo)
 
-_EOF_
-
+	_EOF_
+fi
+exit 0
