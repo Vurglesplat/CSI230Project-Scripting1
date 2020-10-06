@@ -5,9 +5,16 @@
 # author brandon.boras
 # date 10/20/2020
 
+# basic info for the distro, namely kernel version and CPU architecture (x86_64)
+distroInfo()
+{
+	uname -srm
+}
+
 cat << _EOF_
 
 hello world 2!!!
+$(distroInfo)
 
 _EOF_
 
