@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# file SysInfoProject
+# brief  The first script to gather system info with commenting for the file and functions 
+# author brandon.boras
+# date 10/20/2020
+
+echo "Hello World!"
