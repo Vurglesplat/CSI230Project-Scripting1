@@ -25,6 +25,30 @@ MemoryInfo()
 	free -ht
 }
 
+# displays disk information,lists disk devices,free space on partitions
+DiskInfo()
+{
+	printf "\n\n_____3. Disks_____\n"
+	lsblk
+}
+
+# checks if shell is interactive, then prompt to include groups
+IncludeGroupsCheck()
+{
+	printf "\n\n_____4. Interactive user groups_____\n"
+	if [ -z "$PS1" ]; then
+		read -p "Should I print your user groups too? (Y/N): "  userReply
+		if [[  $userReply =~ ^[Yy]$ ]]; then
+			printf "\n Would print groups here"
+		else
+			printf "Noted, will not print groups"
+		fi
+	else
+		printf "This was not detected as an interactive shell, so I cannot print groups\n"
+	fi
+}
+
+		# main program begins here
 
 if [ "$EUID" -ne 0 ]; then
 	echo "Must Run as Root"
@@ -34,6 +58,8 @@ else
 
 	$(BasicInfo)
 	$(MemoryInfo)
+	$(DiskInfo)
+	$(IncludeGroupsCheck)
 
 	_EOF_
 fi
