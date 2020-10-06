@@ -5,23 +5,35 @@
 # author brandon.boras
 # date 10/20/2020
 
-	#functions
+    #functions
 
-# basic info for the distro, namely kernel version and CPU architecture (x86_64)
-distroInfo()
+# basic info including the distro,kernel version and CPU architecture
+BasicInfo()
 {
-	uname -srm
+	printf "_____1. Basic Info_____\n"
+	lsb_release -d
+	printf "Kernel: "
+    uname -r
+	printf "CPU Architecture: "
+	uname -m
 }
 
+# finds all the info related to memory
+MemoryInfo()
+{
+	printf "\n\n_____2. Memory_____\n"
+	free -ht
+}
+
+
 if [ "$EUID" -ne 0 ]; then
-	echo "Please run as root"
-	exit 0
+	echo "Must Run as Root"
 else
-	# Here script
+    # Here script
 	cat <<- _EOF_
 
-	hello world 2!!!
-	$(distroInfo)
+	$(BasicInfo)
+	$(MemoryInfo)
 
 	_EOF_
 fi
