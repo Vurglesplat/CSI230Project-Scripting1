@@ -56,12 +56,38 @@ IncludeGroupsCheck()
 	fi
 }
 
-# prints the ip address of the hos
+# prints the ip address of the host
 GetIP()
 {
 	printf "\n\n_____5. IP Address_____\n"
 	hostname -I
 }
+
+# prints the umask of the current user
+GetUmask()
+{
+	printf "\n\n_____6. umask_____\n"
+	umask
+}
+
+# Internet Test, definitely not the most efficient method, but it'll do 
+TestConnection()
+{
+	printf "\n\n_____7. internet test_____\n"
+	if [ -z "$PS1" ]; then
+		read -p "Should I run a speed test, it may take a couple seconds? (Y/N): "  userReply
+		if [[  $userReply =~ ^[Yy]$ ]]; then
+			ping -c 5 google.com | grep transmitted
+		else
+			printf "Noted, will not run speed test"
+		fi
+	else
+		printf "This was not detected as an interactive shell, so I will not run an internet test\n"
+	fi
+}
+
+
+
 		# main program begins here
 
 if [ "$EUID" -ne 0 ]; then
@@ -69,14 +95,20 @@ if [ "$EUID" -ne 0 ]; then
 else
     # Here script
 	cat <<- _EOF_
-
+	<html>
+	<title>
 	$(GenerateTitle)
+	</title>
+	<body>
 	$(BasicInfo)
 	$(MemoryInfo)
 	$(DiskInfo)
 	$(IncludeGroupsCheck)
 	$(GetIP)
-
+	$(GetUmask)
+	$(TestConnection)
+	</body>
+	</html>
 	_EOF_
 fi
 exit 0
