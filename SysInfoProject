@@ -7,6 +7,14 @@
 
     #functions
 
+# creates a title with a passed in string, uses default if nothing was passed in
+GenerateTitle()
+{
+	printf "		 *** %s's stats report at " $(whoami)
+	CURRENTDATE=`date +"%Y-%m-%d %T"`
+	echo "${CURRENTDATE}" " ***"
+}
+
 # basic info including the distro,kernel version and CPU architecture
 BasicInfo()
 {
@@ -35,11 +43,11 @@ DiskInfo()
 # checks if shell is interactive, then prompt to include groups
 IncludeGroupsCheck()
 {
-	printf "\n\n_____4. Interactive user groups_____\n"
+	printf "\n\n_____4. User groups (prompted)_____\n"
 	if [ -z "$PS1" ]; then
 		read -p "Should I print your user groups too? (Y/N): "  userReply
 		if [[  $userReply =~ ^[Yy]$ ]]; then
-			printf "\n Would print groups here"
+			groups
 		else
 			printf "Noted, will not print groups"
 		fi
@@ -48,6 +56,12 @@ IncludeGroupsCheck()
 	fi
 }
 
+# prints the ip address of the hos
+GetIP()
+{
+	printf "\n\n_____5. IP Address_____\n"
+	hostname -I
+}
 		# main program begins here
 
 if [ "$EUID" -ne 0 ]; then
@@ -56,10 +70,12 @@ else
     # Here script
 	cat <<- _EOF_
 
+	$(GenerateTitle)
 	$(BasicInfo)
 	$(MemoryInfo)
 	$(DiskInfo)
 	$(IncludeGroupsCheck)
+	$(GetIP)
 
 	_EOF_
 fi
